@@ -10,20 +10,6 @@
 #include <string.h>
 #include <math.h>
 
-#include <vtkUnstructuredGrid.h>
-#include <vtkPoints.h>
-#include <vtkCellArray.h>
-#include <vtkUnsignedIntArray.h>
-#include <vtkUnsignedCharArray.h>
-#include <vtkDataSet.h>
-#include <vtkCellData.h>
-#include <vtkPointData.h>
-#include <vtkXMLUnstructuredGridWriter.h>
-#include <vtkFloatArray.h>
-#include <vtkBitArray.h>
-#include <vtkCellLinks.h>
-#include <vtkDataArray.h>
-
 #include <sys/stat.h>
 #include <sys/types.h>
 
@@ -337,10 +323,10 @@ bool D3PlotControl::istrn () const
 // --------------------------------------------------
 // GenericCell
 // --------------------------------------------------
-GenericCell::GenericCell (unsigned int* nodes, unsigned char pts, unsigned int partID, unsigned int vtkElemKind)
+GenericCell::GenericCell (unsigned int* nodes, unsigned char pts, unsigned int partID, unsigned int elemKind)
     : _pts (pts),
       _partID (partID),
-      _vtkElemKind (vtkElemKind)
+      _elemKind (elemKind)
 {
 //    _nodes = (unsigned int*)malloc (sizeof (unsigned int) * pts);
     memcpy (_nodes, nodes, sizeof (unsigned int) * pts);
@@ -656,9 +642,9 @@ vtkUnstructuredGrid* D3PlotGeometry::createGrid (grid_kind_t kind)
             for (i = 0; i < (*it)->nodesCount (); i++)
                 pts[i] = _global2local[kind][(*it)->node (i)];
 
-            grid->InsertNextCell ((*it)->vtkElemKind (), (*it)->nodesCount (), pts);
+            grid->InsertNextCell ((*it)->elemKind (), (*it)->nodesCount (), pts);
             partIDField->InsertNextValue ((*it)->partID ());
-            elementTypeField->InsertNextValue ((*it)->vtkElemKind ());
+            elementTypeField->InsertNextValue ((*it)->elemKind ());
 
             if (deletedField)
                 deletedField->InsertNextValue (_deleted[kind][index]);

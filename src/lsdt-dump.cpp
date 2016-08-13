@@ -26,11 +26,7 @@
 #include <stdlib.h>
 #include <assert.h>
 
-#include <vtkXMLUnstructuredGridWriter.h>
-#include <vtkUnstructuredGrid.h>
-
 #include "d3plot.h"
-
 
 
 int main (int argc, char** argv)
